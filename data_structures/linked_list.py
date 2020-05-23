@@ -40,7 +40,7 @@ class Node:
         ---------
         value: [number, str]
         """
-        assert value, 'Don\'t make an empty-value node'
+        assert value != None, 'Don\'t make an empty-value node'
         self.value = value
         self.next = None
 
@@ -67,21 +67,72 @@ class LinkedList:
         """
         self.head = head
     
-    def push(self, node):
+    def push(self, value):
         """
+        Add a value to beginning of llist.
         Time complexity O(1) since we don't need to search.
+
+        Parameters
+        ----------
+        value: [number or str] The value of the new node to be inserted.
         """
         old_head = self.head
-        self.head = node
+        new_head = Node(value)
+        self.head = new_head
 
-        if isinstance(node, DoublyLinkedNode):
+        if isinstance(new_head, DoublyLinkedNode):
             old_head.prev = self.head
 
         self.head.next = old_head
 
     
-    # def insert_after(self, prev_node, new_node):
-    #     assert prev_node, "prev_node must be a type of Node object"
+    def insert_after(self, prev_node, new_value):
+        """
+        Add a new node after a previous node
+
+        Parameters
+        ----------
+        prev_node: [Node or subclass] The node after which to add a new node.
+
+        new_value: [number or str] The value of the new node to be inserted.
+        """
+        assert isinstance(prev_node, Node), "prev_node must be a type of Node object"
+
+        # Instantiate
+        new_node = Node(new_value)
+
+        # Give the new node a next value
+        new_node.next = prev_node.next
+
+        # Make the new node the next of the previous node
+        prev_node.next = new_node
+    
+    def append(self, new_value):
+        """
+        Adds a new node at the end of this llist.
+
+        Parameters
+        ----------
+        new_value: [number or str] The value of the new node to be appended.
+        """
+        # Instantiate
+        new_node = Node(new_value)
+
+        # If this is an empty llist, we need to set the head
+        if self.head == None:
+            self.head = new_node
+        
+        # Otherwise, proceed as normal
+        else:
+
+            # Find the final node
+            last = self.head
+            while last.next:
+                last = last.next
+            
+            # Add a new node after the final node
+            last.next = new_node
+
 
     def print_list(self):
         node = self.head
@@ -119,22 +170,3 @@ class LinkedList:
         return count
 
 
-def get_llist(node_class):
-    llist = LinkedList()
-    llist.head = node_class('first')
-    second = node_class('second')
-    third = node_class('third')
-    llist.head.next = second
-    second.next = third
-
-    if node_class == DoublyLinkedNode:
-        second.prev = llist.head
-        third.prev = second
-
-    return llist
-
-
-if __name__ == '__main__':
-    test_singly_llist()
-    test_doubly_llist()
-    test_append_start()

@@ -1,5 +1,22 @@
 import pytest
-from data_structures.linked_list import Node, DoublyLinkedNode, LinkedList, get_llist
+from data_structures.linked_list import Node, DoublyLinkedNode, LinkedList
+
+def get_llist(node_class):
+    llist = LinkedList()
+    llist.head = node_class('1')
+    second = node_class('2')
+    third = node_class('3')
+    llist.head.next = second
+    second.next = third
+
+    if node_class == DoublyLinkedNode:
+        second.prev = llist.head
+        third.prev = second
+
+    return llist
+
+
+### SINGLY-LINKED NODES ###
 
 class TestNode:
     def test_node_init(self):
@@ -14,22 +31,11 @@ class TestNode:
     def test_node_value_error(self):
         with pytest.raises(AssertionError):
             Node(None)
-            Node('')
         
 
-class TestDoublyLinkedNode:
-    """
-    Cases not covered by Node's tests
-    """
 
-    def test_node_init(self):
-        node_1 = DoublyLinkedNode(1)
-        node_2 = DoublyLinkedNode(2)
-        node_1.next = node_2
-        node_2.prev = node_1 
-        assert node_2.prev == node_1
     
-class TestLinkedList:
+class TestSinglyLinkedList:
     def test_init(self):
         node_1 = Node(1)
         llist = LinkedList(node_1)
@@ -59,31 +65,77 @@ class TestLinkedList:
         # No. of pointers = No. of nodes - 1
         assert count == len(llist) - 1
     
-    def test_uniform_doubly_llist(self):
-        """
-        Make sure each element is of class DoublyLinkedNode and has a next() 
-        except for the last one.
+    def test_singly_llist_push(self):
+        llist = get_llist(Node)
+        llist.push(0)
+        assert isinstance(llist.head, Node), 'Pushed node is not of class Node'
+        assert llist.head.value == 0, 'Pushed node has incorrect new value'
 
-        Can check this by counting number of next pointers. Should be 1 less
-        than the total number ofnodes
-        """
-        # Maybe make a fixture
-        llist = get_llist(DoublyLinkedNode)
-        node = llist.head
-        next_count = 0
-        prev_count = 0
+    def test_singly_llist_insert_after(self):
+        llist = get_llist(Node)
 
-        while node:
-            assert isinstance(node, DoublyLinkedNode)
-            if node.prev:
-                prev_count += 1
-            if node.next:
-                next_count += 1
-                node = node.next
-            else:
-                break
-        
-        # No. of pointers = No. of nodes - 1
-        assert next_count == len(llist) - 1
-        assert prev_count == len(llist) - 1
+        second = llist.head.next
+
+        # Insert a new element after the second element
+        llist.insert_after(second, 4)
+
+        assert second.next.value == 4, 'Didn\'t insert at correct location'
+        assert type(second.next) == Node, 'Inserted wrong class of Node'
     
+    def test_singly_llist_append(self):
+        llist = get_llist(Node)
+        
+        # Find last node for later testing
+        last = llist.head
+        while last.next:
+            last = last.next
+        
+        llist.append(4)
+
+        # last here is actually the previously last
+        assert last.next.value == 4, 'New node not appended to end'
+        assert type(last.next) == Node, 'New node is not of class Node'
+        
+        
+
+### DOUBLY-LINKED NODES ###
+    
+# class TestDoublyLinkedNode:
+#     """
+#     Cases not covered by Node's tests
+#     """
+#     def test_node_init(self):
+#         node_1 = DoublyLinkedNode(1)
+#         node_2 = DoublyLinkedNode(2)
+#         node_1.next = node_2
+#         node_2.prev = node_1 
+#         assert node_2.prev == node_1
+
+# class TestDoublyLinkedList:
+#     def test_uniform_doubly_llist(self):
+#         """
+#         Make sure each element is of class DoublyLinkedNode and has a next() 
+#         except for the last one.
+
+#         Can check this by counting number of next pointers. Should be 1 less
+#         than the total number ofnodes
+#         """
+#         # Maybe make a fixture
+#         llist = get_llist(DoublyLinkedNode)
+#         node = llist.head
+#         next_count = 0
+#         prev_count = 0
+
+#         while node:
+#             assert isinstance(node, DoublyLinkedNode)
+#             if node.prev:
+#                 prev_count += 1
+#             if node.next:
+#                 next_count += 1
+#                 node = node.next
+#             else:
+#                 break
+        
+#         # No. of pointers = No. of nodes - 1
+#         assert next_count == len(llist) - 1
+#         assert prev_count == len(llist) - 1
