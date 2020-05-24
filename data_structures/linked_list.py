@@ -132,14 +132,36 @@ class LinkedList:
             
             # Add a new node after the final node
             last.next = new_node
+    
+    def remove_head(self):
+        
+        # Remove the head unless this linked list has only one element
+        self.head = self.head.next if self.head.next else None
+    
+    def remove_node(self, node_to_remove):
 
-
-    def print_list(self):
+        # Find the node right before the node to remove
         node = self.head
         while node:
-            print(node.value)
+            if node.next == node_to_remove:
+                node.next = node_to_remove.next
+                break
             node = node.next
+            
+
+    def remove_last(self):
+
+        # Find second to last element
+        last = self.head
+        while last.next:
+            second_last = last
+            last = last.next
         
+        # Remove reference to the last node in the list
+        second_last.next = None
+        
+
+
 
     def __repr__(self):
         """

@@ -3,9 +3,9 @@ from data_structures.linked_list import Node, DoublyLinkedNode, LinkedList
 
 def get_llist(node_class):
     llist = LinkedList()
-    llist.head = node_class('1')
-    second = node_class('2')
-    third = node_class('3')
+    llist.head = node_class(1)
+    second = node_class(2)
+    third = node_class(3)
     llist.head.next = second
     second.next = third
 
@@ -95,8 +95,27 @@ class TestSinglyLinkedList:
         # last here is actually the previously last
         assert last.next.value == 4, 'New node not appended to end'
         assert type(last.next) == Node, 'New node is not of class Node'
+    
+    def test_singly_llist_remove_head(self):
+        llist = get_llist(Node)
+        llist.remove_head()
+        assert llist.head.value == 2, 'Head wasn\'t removed'
+        assert llist.head.next.value == 3, 'References weren\'t properly changed'
+    
+    def test_singly_llist_remove_node(self):
+        llist = get_llist(Node)
+        second = llist.head.next
+        llist.remove_node(second)
+        assert llist.head.value == 1, 'Head was modified'
+        assert llist.head.next.value == 3, 'Node wasn\'t removed'
         
-        
+    def test_singly_llist_remove_last(self):
+        llist = get_llist(Node)
+        llist.remove_last()
+        last = llist.head.next
+        assert last.next == None, 'Last node remains'
+        assert last.value == 2, 'More than just the last node was altered'
+
 
 ### DOUBLY-LINKED NODES ###
     
