@@ -76,8 +76,9 @@ class LinkedList:
         ----------
         value: [number or str] The value of the new node to be inserted.
         """
+        node_type = type(self.head)
         old_head = self.head
-        new_head = Node(value)
+        new_head = node_type(value)
         self.head = new_head
 
         if isinstance(new_head, DoublyLinkedNode):
@@ -134,7 +135,7 @@ class LinkedList:
             last.next = new_node
     
     def remove_head(self):
-        
+
         # Remove the head unless this linked list has only one element
         self.head = self.head.next if self.head.next else None
     

@@ -18,6 +18,7 @@ def get_llist(node_class):
 
 ### SINGLY-LINKED NODES ###
 
+
 class TestNode:
     def test_node_init(self):
         node_1 = Node(1)
@@ -106,7 +107,7 @@ class TestSinglyLinkedList:
         llist = get_llist(Node)
         second = llist.head.next
         llist.remove_node(second)
-        assert llist.head.value == 1, 'Head was modified'
+        assert llist.head.value == 1, 'Node before removal was modified'
         assert llist.head.next.value == 3, 'Node wasn\'t removed'
         
     def test_singly_llist_remove_last(self):
@@ -119,42 +120,62 @@ class TestSinglyLinkedList:
 
 ### DOUBLY-LINKED NODES ###
     
-# class TestDoublyLinkedNode:
-#     """
-#     Cases not covered by Node's tests
-#     """
-#     def test_node_init(self):
-#         node_1 = DoublyLinkedNode(1)
-#         node_2 = DoublyLinkedNode(2)
-#         node_1.next = node_2
-#         node_2.prev = node_1 
-#         assert node_2.prev == node_1
+class TestDoublyLinkedNode:
+    """
+    Cases not covered by Node's tests
+    """
+    def test_node_init(self):
+        node_1 = DoublyLinkedNode(1)
+        node_2 = DoublyLinkedNode(2)
+        node_1.next = node_2
+        node_2.prev = node_1 
+        assert node_2.prev == node_1
 
-# class TestDoublyLinkedList:
-#     def test_uniform_doubly_llist(self):
-#         """
-#         Make sure each element is of class DoublyLinkedNode and has a next() 
-#         except for the last one.
+def assert_uniform(llist):
+    """
+    Checks to see if the given llist is completely of the same type of node, as 
+    determined by the type of the head. Otherwise, test will fail.
 
-#         Can check this by counting number of next pointers. Should be 1 less
-#         than the total number ofnodes
-#         """
-#         # Maybe make a fixture
-#         llist = get_llist(DoublyLinkedNode)
-#         node = llist.head
-#         next_count = 0
-#         prev_count = 0
+    Parameters
+    ----------
+    llist: [LinkedList] the LinkedList object to check.
+    """
+    node = llist.head
+    next_count = 0
+    prev_count = 0
 
-#         while node:
-#             assert isinstance(node, DoublyLinkedNode)
-#             if node.prev:
-#                 prev_count += 1
-#             if node.next:
-#                 next_count += 1
-#                 node = node.next
-#             else:
-#                 break
-        
-#         # No. of pointers = No. of nodes - 1
-#         assert next_count == len(llist) - 1
-#         assert prev_count == len(llist) - 1
+    while node:
+        assert isinstance(node, DoublyLinkedNode)
+        if node.prev:
+            prev_count += 1
+        if node.next:
+            next_count += 1
+            node = node.next
+        else:
+            break
+    
+    # No. of pointers = No. of nodes - 1
+    assert next_count == len(llist) - 1
+    assert prev_count == len(llist) - 1
+
+class TestDoublyLinkedList:
+    def test_uniform_doubly_llist(self):
+        """
+        Make sure each element is of class DoublyLinkedNode and has a next() 
+        except for the last one.
+
+        Can check this by counting number of next pointers. Should be 1 less
+        than the total number ofnodes
+        """
+        # Maybe make a fixture
+        llist = get_llist(DoublyLinkedNode)
+        assert_uniform(llist)
+    
+    def test_push(self):
+        llist = get_llist(DoublyLinkedNode)
+        llist.push(0)
+        old_head = llist.head.next
+        assert llist.head.value == 0, 'Value not properly assigned to new node'
+        assert old_head.value == 1, 'New head does not reference the old head'
+        assert old_head.prev == llist.head, 'Old head does not reference the new head'
+        assert_uniform(llist)
