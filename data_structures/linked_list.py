@@ -28,21 +28,7 @@ Doubly Linked List Example
 
 (X) (<- 5 ->) (<- -2 ->) (<- 8 ->) (X)
 """
-
-class Node:
-    """
-    Parent class for nodes in linkedlist. subclasses will handle doubly linked
-    relationships.
-    """
-    def __init__(self, value):
-        """
-        Parameter
-        ---------
-        value: [number, str]
-        """
-        assert value != None, 'Don\'t make an empty-value node'
-        self.value = value
-        self.next = None
+from .node import Node
 
 class DoublyLinkedNode(Node):
     """

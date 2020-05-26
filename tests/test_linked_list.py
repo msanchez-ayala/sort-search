@@ -1,5 +1,6 @@
 import pytest
-from data_structures.linked_list import Node, DoublyLinkedNode, LinkedList
+from data_structures.linked_list import DoublyLinkedNode, LinkedList
+from data_structures.node import Node
 
 def get_llist(node_class):
     llist = LinkedList()
@@ -95,7 +96,7 @@ class TestSinglyLinkedList:
 
         # last here is actually the previously last
         assert last.next.value == 4, 'New node not appended to end'
-        assert type(last.next) == Node, 'New node is not of class Node'
+        assert isinstance(last.next, Node), 'New node is not of class Node'
     
     def test_singly_llist_remove_head(self):
         llist = get_llist(Node)
