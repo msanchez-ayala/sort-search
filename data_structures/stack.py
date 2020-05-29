@@ -1,9 +1,6 @@
 """
 A stack is a LIFO (last in first out) structure. The most recently added element
 is the first one that can be seen or removed.
-
-We use the basic node model containing a value and a reference to the next node 
-(node below current one in the stack)
 """
 from .node import Node
 

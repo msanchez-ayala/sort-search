@@ -1,11 +1,6 @@
 import pytest
 from data_structures.stack import Stack, SizeError
 from data_structures.node import Node
-class TestNode:
-    def test_init(self):
-        node = Node(5)
-        assert node.value == 5, 'Node value not properly insantiated'
-        assert node.next == None, 'Next node this one is not None'
 
 @pytest.fixture
 def stack():
