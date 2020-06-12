@@ -1,66 +1,51 @@
-def merge(arr, start, mid, end):
+def merge_sort(arr):
     """
-    Takes two intervals - first from the start to mid and second from mid+1 to 
-    the end. Merges them in a sorted order.
+    Merge sorts a list in place. Code taken from educative.io
     """
 
-    # create a temporary array
-    temp = [0] * (end - start + 1)
+    if len(arr) <= 1:
+        # Do nothing to empty list or list with only one element
+        return
+    
+    # Find midpoint and then split up the list
+    mid = len(arr) // 2
+    left = arr[:mid]
+    right = arr[mid:]
 
-    # crawlers for both intervals and for temp
-    i, j, k = start, mid+1, 0
+    # Recursive call on each half
+    merge_sort(left)
+    merge_sort(right)
 
-    # traverse both lists and in each iteration add smaller of both elements in temp 
-    while (i <= mid) and (j <= end):
-        if arr[i] <= arr[j]:
-            temp[k] = arr[i]
-            k += 1
+    # Two iterators for traversing the two halves
+    i = 0
+    j = 0
+    
+    # Iterator for the main list
+    k = 0
+    
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+
+            # The value from the left half has been used
+            arr[k] = left[i]
+
+            # Move the iterator forward
             i += 1
 
         else:
-            temp[k] = arr[j]
-            k += 1
+            arr[k] = right[j]
             j += 1
 
-    # add elements left in the first interval 
-    while i <= mid:
-        temp[k] = arr[i]
+        # Move to the next slot
         k += 1
+
+    # For all the remaining values
+    while i < len(left):
+        arr[k] = left[i]
         i += 1
-
-    # add elements left in the second interval 
-    while j <= end:
-        temp[k] = arr[j]
         k += 1
+
+    while j < len(right):
+        arr[k]=right[j]
         j += 1
-
-    # copy temp to original interval
-    for i in range(start, end + 1):
-        arr[i] = temp[i - start]
-
-def merge_sort(arr, start, end):
-    """
-    Returns
-    -------
-    A 1-D array sorted from least to greatest.
-
-    Parameters
-    ----------
-    arr: [list, tuple] a potentially unsorted 1-D array.
-    start: [int] starting index of current interval of arr
-    end: [int] ending index of current interval of arr
-    """
-    if start < end:
-        # Pick an integer midpoint index
-        mid = (start + end) // 2
-
-        # Sort left side
-        merge_sort(arr, start, mid)
-
-        # Sort right side
-        merge_sort(arr, mid+1, end)
-
-        # Merge two halves together
-        merge(arr, start, mid, end)
-    
-    return arr
+        k += 1
