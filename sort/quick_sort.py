@@ -1,42 +1,42 @@
-def swap(arr, i, j):
+def partition(arr, start, end):
     """
-    Swaps elements i and j of arr in place.
+    Helper that handles swapping of elements.
 
+    Returns
+    -------
+    an integer representing the new partition index.
+    """
+    pi = start - 1       # partition index 
+    pivot = arr[end]     # pivot to compare against
+  
+    for j in range(start, end): 
+        
+        if arr[j] <= pivot: 
+    
+            pi += 1 
+            arr[pi], arr[j] = arr[j], arr[pi] 
+  
+    arr[pi + 1], arr[end] = arr[end], arr[pi + 1] 
+    
+    return pi + 1 
+  
+  
+
+def quick_sort(arr, start, end):
+    """
+    Function that orchestrates the overall sort.
+    
     Parameters
     ----------
-    arr: [list] the array to swap values.
-
-    i, j: [int] indices of two array elements to swap.
+    arr: [list] array to be sorted
+    start, end: [int] indices of start and end of sort 
     """
-    arr[i], arr[j] = arr[j], arr[i]
-
-
-def quick_sort(arr):
-
-    if len(arr) <= 1:
-        return arr
-
-    # Track indices of seperator, number, and pivot
-    sep = 0
-    num = 0
-    piv = len(arr) - 1
-
-    while num < len(arr):
-        print(sep, num, piv)
-        print(arr)
-        if arr[num] <= arr[piv]:
-            if num > piv:
-                swap(arr, num, piv)
-            sep += 1
-
-        num += 1
-    
-    # Address pivot
-    if arr[piv] < arr[sep]:
-        swap(arr, piv, sep)
-
-    # Sort remaining chunks
-    quick_sort(arr[:sep])
-    quick_sort(arr[sep:])
-
-    
+    if start < end: 
+  
+        # pi is partitioning index, arr[p] is now 
+        # at right place 
+        pi = partition(arr,start,end) 
+  
+        # Sort elements before and after partition
+        quick_sort(arr, start, pi - 1) 
+        quick_sort(arr, pi + 1, end) 
